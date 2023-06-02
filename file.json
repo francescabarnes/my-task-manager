@@ -1,1 +1,6 @@
-{"tasks":[{"task":"read","status":"doing"},{"task":"read","status":"doing"},"read","b"]}
+{
+  "tasks": [
+    { "task": "read", "status": "doing" },
+    { "task": "read", "status": "doing" }
+  ]
+}

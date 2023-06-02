@@ -12,7 +12,7 @@ const readTasks = () => {
   return new Promise((resolve, reject) => {
     fs.readFile("file.json", function (err, data) {
       if (err) throw err;
-      const tasks = JSON.parse(data);
+      const tasks = JSON.parse(tasks);
       resolve(tasks);
     });
   });
