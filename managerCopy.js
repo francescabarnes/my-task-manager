@@ -35,8 +35,16 @@ const addTask = () => {
 };
 
 const removeTask = () => {
-  rl.question("Which task do you wanna add: ", (task) => {
-    console.log("Your new task: ", task);
+  rl.question("Which task do you wanna remove: ", async (rmtask) => {
+    const tasks = await readTasks();
+    const found = tasks.indexOf(rmtask);
+    console.log(found);
+    if (found > -1) {
+      //if found
+      tasks.splice(found, 1);
+    }
+
+    await writeTasks(tasks);
   });
 };
 
