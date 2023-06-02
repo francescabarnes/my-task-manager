@@ -3,24 +3,34 @@
 // SETUP CODE
 const fs = require("fs");
 const readline = require("readline");
-var rl = readline.createInterface(process.stdin, process.stdout);
+const rl = readline.createInterface(process.stdin, process.stdout);
 
-let welcome =
+const welcome =
   "Welcome to your task manager, Press: \n1. to see all your tasks \n2. to add a task \n3. to delete a task \n4. to mark a task as done \n5. to Exit the task manager";
 
-const readTask = () => {
-  fs.readFile("file.json", function (err, data) {
-    if (err) throw err;
-    var array = data.toString().split("\n");
-    for (i in array) {
-      console.log(array[i]);
-    }
+const readTasks = () => {
+  return new Promise((resolve, reject) => {
+    fs.readFile("file.json", function (err, data) {
+      if (err) throw err;
+      const tasks = JSON.parse(data);
+      resolve(tasks);
+    });
+  });
+};
+const writeTasks = (tasks) => {
+  return new Promise((resolve, reject) => {
+    const tasksString = JSON.stringify(tasks);
+    fs.writeFile("file.json", tasksString, () => {
+      resolve();
+    });
   });
 };
 
 const addTask = () => {
-  rl.question("Which task do you wanna add: ", (task) => {
-    console.log("Your new task: ", task);
+  rl.question("Which task do you wanna add: ", async (task) => {
+    const tasks = await readTasks();
+    tasks.push(task);
+    await writeTasks(tasks);
   });
 };
 
@@ -39,14 +49,13 @@ const markAsDone = () => {
 function doTask() {
   return new Promise(function (resolve, reject) {
     //I need to use promisse because I'm waiting for user anse
-    let rl = readline.createInterface(process.stdin, process.stdout);
     console.log(welcome);
     rl.setPrompt("which task? > ");
     rl.prompt();
-    rl.on("line", function (line) {
+    rl.on("line", async function (line) {
       switch (line.trim()) {
         case "1":
-          readTask();
+          console.log(await readTasks());
           break;
         case "2":
           addTask();
@@ -64,7 +73,10 @@ function doTask() {
         default:
           console.log(welcome);
       }
+
       rl.prompt();
+    }).on("close", function () {
+      resolve();
     });
   });
 }
