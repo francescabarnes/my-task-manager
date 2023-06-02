@@ -24,11 +24,24 @@ const addTask = () => {
   });
 };
 
-function replDemo() {
+const removeTask = () => {
+  rl.question("Which task do you wanna add: ", (task) => {
+    console.log("Your new task: ", task);
+  });
+};
+
+const markAsDone = () => {
+  rl.question("Which task do you wanna add: ", (task) => {
+    console.log("Your new task: ", task);
+  });
+};
+
+function doTask() {
   return new Promise(function (resolve, reject) {
+    //I need to use promisse because I'm waiting for user anse
     let rl = readline.createInterface(process.stdin, process.stdout);
     console.log(welcome);
-    rl.setPrompt("task> ");
+    rl.setPrompt("which task? > ");
     rl.prompt();
     rl.on("line", function (line) {
       switch (line.trim()) {
@@ -39,15 +52,17 @@ function replDemo() {
           addTask();
           break;
         case "3":
-          addTask();
+          removeTask();
           break;
         case "4":
-          addTask();
+          markAsDone();
           break;
         case "5":
           console.log("bye");
           rl.close();
           return;
+        default:
+          console.log(welcome);
       }
       rl.prompt();
     });
@@ -56,7 +71,7 @@ function replDemo() {
 
 async function run() {
   try {
-    let replResult = await replDemo();
+    let replResult = await doTask();
     console.log("repl result:", replResult);
   } catch (e) {
     console.log("failed:", e);
