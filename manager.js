@@ -13,12 +13,14 @@ let tasks = ["task1", "task2", "task3"];
 const showtasks = () => {
   console.log(tasks);
   rl.question(welcome);
+  doQuestion();
 };
 
 const addTask = () => {
   rl.question("Add a new task: ", (taskNumber) => {
     tasks.push(taskNumber);
     console.log(tasks);
+    doQuestion();
   });
 };
 
@@ -27,6 +29,7 @@ const deleteTask = () => {
     const found = tasks.indexOf(task);
     tasks.splice(found, 1);
     console.log(tasks);
+    doQuestion();
   });
 };
 
@@ -35,10 +38,19 @@ const updateTask = () => {
     const indexFound = tasks.indexOf(task);
     tasks[indexFound] = `${task} - done`;
     console.log(tasks);
+    doQuestion();
   });
 };
 
-rl.question(welcome, (taskNumber) => {
+const doQuestion = () => {
+  rl.question(welcome, (taskNumber) => {
+    check(taskNumber);
+  });
+};
+
+doQuestion();
+
+const check = (taskNumber) => {
   if (taskNumber === "1") {
     showtasks();
   } else if (taskNumber === "2") {
@@ -50,4 +62,4 @@ rl.question(welcome, (taskNumber) => {
   } else if (taskNumber === "5") {
     rl.close();
   }
-});
+};
